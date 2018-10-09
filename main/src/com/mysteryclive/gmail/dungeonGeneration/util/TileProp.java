@@ -9,17 +9,14 @@ public enum TileProp {
     TRAP,
     TREASURE;
 
-    public enum TREASURE {
-        NULL
+    private String propType;
+
+    public String getPropType() {
+        return propType;
     }
 
-    public enum CHEST {
-        NULL
-    }
-
-    public enum TRAP {
-        POISON,
-        PITFALL
+    public void setPropType(String newPropType) {
+        propType = newPropType;
     }
 
 }
