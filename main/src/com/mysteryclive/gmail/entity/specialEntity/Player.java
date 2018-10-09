@@ -15,7 +15,7 @@ public class Player extends Entity {
     public Player(double maxHealth, double statATK, double statDEF, double statLUC, double statREFLECT,
                   double statDODGE, double statFIRE, double statICE, double statEARTH, double statLIGHT,
                   double statDARK) {
-        super(EntityType.PLAYER, maxHealth, statATK, statDEF, statLUC, statREFLECT, statDODGE, statFIRE, statICE, statEARTH, statLIGHT, statDARK);
+        super(EntityType.PLAYER, maxHealth, statATK, statDEF, statLUC, statDODGE, statREFLECT, statFIRE, statICE, statEARTH, statLIGHT, statDARK);
     }
 
 }

@@ -1,50 +1,40 @@
 package com.mysteryclive.gmail.entity;
 
 import java.util.HashSet;
+import java.util.HashMap;
 
-import com.mysteryclive.gmail.entity.EntityType;
 import com.mysteryclive.gmail.itemHandler.ItemClass;
 
 public class Entity {
 
-    public HashSet<ItemClass> dropList = new HashSet<>();
-    public EntityType entityType;
-    public double health, atk, def, luck, reflect, dodge, fire_affinity, ice_affinity,
-            earth_affinity, light_affinity, dark_affinity;
+    private HashSet<ItemClass> dropList = new HashSet<>();
+    private EntityType entityType;
+    private HashMap<EntityStatistic, Double> statList = new HashMap<>();
 
     public Entity() {
     }
 
-    public Entity(EntityType type, double maxHealth, double statATK, double statDEF, double statLUC, double statREFLECT,
-                  double statDODGE, double statFIRE, double statICE, double statEARTH, double statLIGHT,
-                  double statDARK) {
+    public Entity(EntityType type, double maxHealth, double statATK, double statDEF, double statLUC, double statDODGE,
+                  double statREFLECT, double statFIRE, double statICE, double statEARTH, double statLIGHT, double statDARK) {
         entityType = type;
-        health = maxHealth;
-        atk = statATK;
-        def = statDEF;
-        luck = statLUC;
-        reflect = statREFLECT;
-        dodge = statDODGE;
-        fire_affinity = statFIRE;
-        ice_affinity = statICE;
-        earth_affinity = statEARTH;
-        light_affinity = statLIGHT;
-        dark_affinity = statDARK;
+        statList.put(EntityStatistic.HP, maxHealth);
+        statList.put(EntityStatistic.ATK, maxHealth);
+        statList.put(EntityStatistic.DEF, maxHealth);
+        statList.put(EntityStatistic.LUC, maxHealth);
+        statList.put(EntityStatistic.DODGE, maxHealth);
+        statList.put(EntityStatistic.REFLECT, maxHealth);
+        statList.put(EntityStatistic.FIRE, maxHealth);
+        statList.put(EntityStatistic.ICE, maxHealth);
+        statList.put(EntityStatistic.EARTH, maxHealth);
+        statList.put(EntityStatistic.LIGHT, maxHealth);
+        statList.put(EntityStatistic.DARK, maxHealth);
     }
 
-    public Entity(EntityType type, double maxHealth, double statATK, double statDEF, double statLUC, double statREFLECT,
-                  double statDODGE, double statFIRE, double statICE, double statEARTH, double statLIGHT,
-                  double statDARK, HashSet<ItemClass> drops) {
-        this(type, maxHealth, statATK, statDEF, statLUC, statREFLECT, statDODGE, statFIRE, statICE, statEARTH, statLIGHT, statDARK);
+    public Entity(EntityType type, double maxHealth, double statATK, double statDEF, double statLUC, double statDODGE,
+                  double statREFLECT,  double statFIRE, double statICE, double statEARTH, double statLIGHT, double statDARK,
+                  HashSet<ItemClass> drops) {
+        this(type, maxHealth, statATK, statDEF, statLUC, statDODGE, statREFLECT, statFIRE, statICE, statEARTH, statLIGHT, statDARK);
         dropList = drops;
-    }
-
-    public double getHealth() {
-        return health;
-    }
-
-    public void setHealth(double newHP) {
-        health = newHP;
     }
 
 }
