@@ -1,6 +1,8 @@
 package com.mysteryclive.gmail.dungeonGeneration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.security.SecureRandom;
 
 import com.mysteryclive.gmail.dungeonGeneration.util.Direction;
 import com.mysteryclive.gmail.dungeonGeneration.util.TileData;
@@ -30,6 +32,35 @@ public class DungeonClass {
                 tileSet.add(new TileData(new int[]{x, y}));
             }
         }
+    }
+
+    public void generateRooms(int maxRooms, int maxAttempts) {
+        generateRooms(maxRooms, maxAttempts, 2, Math.min(10, width / 10), 2, Math.min(10, length / 10));
+    }
+
+    public void generateRooms(int maxRooms, int maxAttempts, int minRoomWidth, int maxRoomWidth, int minRoomLength, int maxRoomLength) {
+        int roomsGenerated = 0, attemptsMade = 0;
+        int startX, startY, extendX, extendY;
+        HashMap<int[], int[]> listRooms = new HashMap<>();
+        SecureRandom rnd = new SecureRandom();
+
+        while (roomsGenerated <= maxRooms && attemptsMade <= maxAttempts) {
+            extendX = rnd.nextInt(maxRoomWidth - minRoomWidth) + minRoomWidth;
+            extendY = rnd.nextInt(maxRoomLength - minRoomLength) + minRoomLength;
+            startX = rnd.nextInt(width - extendX);
+            startY = rnd.nextInt(length - extendY);
+
+            for (int[] checkRoom : listRooms.keySet()) {
+                // TODO[#0007]
+                // Finish room generation logic
+            }
+        }
+    }
+
+    public void generateCorridors() {
+        // TODO[#0008]
+        // Create corridor generation logic, or multiple methods for corridor generation if there are multiple methods
+        // to implement that produce distinctly different mazes.
     }
 
     public int getWidth() {
@@ -66,7 +97,7 @@ public class DungeonClass {
         return newCell;
     }
 
-    public boolean canMakeCorridor(TileData tile) {
+    public boolean canSetCorridorFloor(TileData tile) {
         return tile.isEmpty() && tile.getTileID() != null
                 && tileInDirections(tile.getTileX(), tile.getTileY(), new Direction[]{Direction.NORTH, Direction.EAST}).getTileType() != TileType.FLOOR
                 && tileInDirections(tile.getTileX(), tile.getTileY(), new Direction[]{Direction.NORTH, Direction.WEST}).getTileType() != TileType.FLOOR
