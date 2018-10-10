@@ -12,17 +12,20 @@ public class Dungeon {
     private int width, length;
     private ArrayList<Tile> tileSet = new ArrayList<>();
 
-    public DungeonClass(int gridWidth, int gridLength) {
-        this(gridWidth, gridLength, Math.random());
-    }
-
-    public DungeonClass(int gridWidth, int gridLength, double preferenceFactor) {
+    /**
+     * Generates a new rectangular Dungeon using a specified width and length.
+     * @param gridWidth The width of the dungeon.
+     * @param gridLength The length of the dungeon.
+     */
+    public Dungeon(int gridWidth, int gridLength) {
         this.width = gridWidth;
         this.length = gridLength;
-        this.dirPrefFactor = preferenceFactor;
         this.generateBlankGrid();
     }
 
+    /**
+     * Resets the dungeon and fills every tile with a VOID type tile.
+     */
     public void generateBlankGrid() {
         tileSet.clear();
         for (int y = 0; y < length; y++) {
@@ -32,10 +35,24 @@ public class Dungeon {
         }
     }
 
+    /**
+     * Attempts to generate up to a certain amount of rooms. Gives up if a room fails to generate a certain amount of times.
+     * @param maxRooms The maximum number of rooms that will be generated.
+     * @param maxAttempts The maximum amount of attempts to generate each room before the method gives up.
+     */
     public void generateRooms(int maxRooms, int maxAttempts) {
         generateRooms(maxRooms, maxAttempts, 2, Math.min(10, width / 10), 2, Math.min(10, length / 10));
     }
 
+    /**
+     * Attempts to generate up to a certain amount of rooms. Gives up if a room fails to generate a certain amount of times.
+     * @param maxRooms The maximum number of rooms that will be generated.
+     * @param maxAttempts The maximum amount of attempts to generate each room before the method gives up.
+     * @param minRoomWidth The minimum room width.
+     * @param maxRoomWidth The maximum room width.
+     * @param minRoomLength The minimum room length.
+     * @param maxRoomLength The maximum room length.
+     */
     public void generateRooms(int maxRooms, int maxAttempts, int minRoomWidth, int maxRoomWidth, int minRoomLength, int maxRoomLength) {
         int roomsGenerated = 0, attemptsMade = 0;
         int startX, startY, extendX, extendY;
@@ -55,7 +72,12 @@ public class Dungeon {
         }
     }
 
-    public void generateCorridors() {
+    /**
+     * Attempts to generate a winding maze-like corridor, starting at a given tile.
+     * @param startingTile The Tile at which to start attempting to generate the winding corridors.
+     * @param directionalPreference The chance that . Ranges from 0 to 1 inclusively.
+     */
+    public void generateCorridors(Tile startingTile, double directionalPreference) {
         // TODO[#0008]
         // Create corridor generation logic, or multiple methods for corridor generation if there are multiple methods
         // to implement that produce distinctly different mazes.
