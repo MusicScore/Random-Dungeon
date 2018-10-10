@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.item.util;
+package com.mysteryclive.gmail.randomdungeon.item.util;
 
 public enum ItemType {
     HEALING_MINOR,

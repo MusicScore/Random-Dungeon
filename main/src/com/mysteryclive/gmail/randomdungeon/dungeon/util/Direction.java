@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.dungeon.util;
+package com.mysteryclive.gmail.randomdungeon.dungeon.util;
 
 import java.security.SecureRandom;
 

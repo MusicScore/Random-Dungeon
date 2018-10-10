@@ -1,9 +1,9 @@
-package com.mysteryclive.gmail.entity;
+package com.mysteryclive.gmail.randomdungeon.entity;
 
 import java.util.HashSet;
 import java.util.HashMap;
 
-import com.mysteryclive.gmail.item.ItemClass;
+import com.mysteryclive.gmail.randomdungeon.item.ItemClass;
 
 public class Entity {
 

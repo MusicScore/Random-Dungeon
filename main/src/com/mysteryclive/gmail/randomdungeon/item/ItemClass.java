@@ -1,6 +1,6 @@
-package com.mysteryclive.gmail.item;
+package com.mysteryclive.gmail.randomdungeon.item;
 
-import com.mysteryclive.gmail.item.util.ItemType;
+import com.mysteryclive.gmail.randomdungeon.item.util.ItemType;
 
 public class ItemClass {
 

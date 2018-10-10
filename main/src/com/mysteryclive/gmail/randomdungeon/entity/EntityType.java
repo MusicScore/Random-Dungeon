@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.entity;
+package com.mysteryclive.gmail.randomdungeon.entity;
 
 public enum EntityType {
     PLAYER,

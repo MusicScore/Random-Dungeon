@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.render;
+package com.mysteryclive.gmail.randomdungeon.render;
 
 //import java.util.ArrayList;
 import java.awt.Color;
@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
-import com.mysteryclive.gmail.dungeon.DungeonClass;
+import com.mysteryclive.gmail.randomdungeon.dungeon.DungeonClass;
 
 public class GameEngine extends JFrame implements Runnable {
     private static final long serialVersionUID = 1L;

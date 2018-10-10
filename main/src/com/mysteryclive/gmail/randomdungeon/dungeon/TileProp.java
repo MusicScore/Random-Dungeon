@@ -1,6 +1,6 @@
-package com.mysteryclive.gmail.dungeon;
+package com.mysteryclive.gmail.randomdungeon.dungeon;
 
-import com.mysteryclive.gmail.dungeon.util.TilePropType;
+import com.mysteryclive.gmail.randomdungeon.dungeon.util.TilePropType;
 
 public class TileProp {
 
