@@ -1,7 +1,6 @@
 package com.mysteryclive.gmail;
 
 import com.mysteryclive.gmail.dungeonGeneration.DungeonClass;
-import com.mysteryclive.gmail.dungeonGeneration.util.TileData;
 import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
 import com.mysteryclive.gmail.render.GameEngine;
 

@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.security.SecureRandom;
 
 import com.mysteryclive.gmail.dungeonGeneration.util.Direction;
-import com.mysteryclive.gmail.dungeonGeneration.util.TileData;
+import com.mysteryclive.gmail.dungeonGeneration.util.Tile;
 import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
 
 public class DungeonClass {
 
     private int width, length;
     private double dirPrefFactor;
-    private ArrayList<TileData> tileSet = new ArrayList<>();
+    private ArrayList<Tile> tileSet = new ArrayList<>();
 
     public DungeonClass(int gridWidth, int gridLength) {
         this(gridWidth, gridLength, Math.random());
@@ -29,7 +29,7 @@ public class DungeonClass {
         tileSet.clear();
         for (int y = 0; y < length; y++) {
             for (int x = 0; x < width; x++) {
-                tileSet.add(new TileData(new int[]{x, y}));
+                tileSet.add(new Tile(new int[]{x, y}));
             }
         }
     }
@@ -71,25 +71,25 @@ public class DungeonClass {
         return length;
     }
 
-    public ArrayList<TileData> getAllTiles() {
+    public ArrayList<Tile> getAllTiles() {
         return tileSet;
     }
 
-    public void setTile(int x, int y, TileData tile) {
+    public void setTile(int x, int y, Tile tile) {
         tileSet.set(x + y * width, tile);
     }
 
-    public TileData getTile(int x, int y) {
+    public Tile getTile(int x, int y) {
         return (x < width && x >= 0 && y < length && y >= 0) ? tileSet.get(x + y * width) : null;
     }
 
-    public TileData tileInDirection(int x, int y, Direction dir) {
+    public Tile tileInDirection(int x, int y, Direction dir) {
         return getTile(x + dir.asXOffset(), y + dir.asYOffset());
     }
 
-    public TileData tileInDirections(int x, int y, Direction[] dir) {
-        TileData currentTile = getTile(x, y);
-        TileData newCell = null;
+    public Tile tileInDirections(int x, int y, Direction[] dir) {
+        Tile currentTile = getTile(x, y);
+        Tile newCell = null;
         for (Direction val : dir) {
             newCell = tileInDirection(currentTile.getTileX(), currentTile.getTileY(), val);
             currentTile = newCell;
@@ -97,7 +97,7 @@ public class DungeonClass {
         return newCell;
     }
 
-    public boolean canSetCorridorFloor(TileData tile) {
+    public boolean canSetCorridorFloor(Tile tile) {
         return tile.isEmpty() && tile.getTileID() != null
                 && tileInDirections(tile.getTileX(), tile.getTileY(), new Direction[]{Direction.NORTH, Direction.EAST}).getTileType() != TileType.FLOOR
                 && tileInDirections(tile.getTileX(), tile.getTileY(), new Direction[]{Direction.NORTH, Direction.WEST}).getTileType() != TileType.FLOOR
