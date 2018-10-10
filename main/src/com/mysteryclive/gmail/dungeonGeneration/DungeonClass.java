@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.security.SecureRandom;
 
 import com.mysteryclive.gmail.dungeonGeneration.util.Direction;
-import com.mysteryclive.gmail.dungeonGeneration.util.Tile;
 import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
 
 public class DungeonClass {

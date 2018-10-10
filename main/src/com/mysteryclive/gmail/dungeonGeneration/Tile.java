@@ -1,9 +1,11 @@
-package com.mysteryclive.gmail.dungeonGeneration.util;
+package com.mysteryclive.gmail.dungeonGeneration;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.mysteryclive.gmail.dungeonGeneration.util.TilePropType;
+import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
 import com.mysteryclive.gmail.itemHandler.ItemClass;
 
 // TODO[#0004]
@@ -47,7 +49,7 @@ public class Tile {
         return tileType;
     }
 
-    private TilePropType tileProperty = null;
+    private TileProp tileProperty = null;
     private String propType = null;
     private ArrayList<ItemClass> containerContentsList = new ArrayList<>();
     private HashSet<String> propertyList = new HashSet<>();
@@ -56,24 +58,24 @@ public class Tile {
         containerContentsList.addAll(itemList);
     }
 
-    public void setProperty(TilePropType prop) {
+    public void setProperty(TileProp prop) {
         tileProperty = prop;
     }
 
     public ArrayList<ItemClass> listContents() {
-        return tileProperty == TilePropType.TREASURE || tileProperty == TilePropType.CHEST ? containerContentsList : null;
+        return tileProperty.getType() == TilePropType.TREASURE || tileProperty.getType() == TilePropType.CHEST ? containerContentsList : null;
     }
 
     public String getTrapType() {
-        return tileProperty == TilePropType.TRAP ? propType : null;
+        return tileProperty.getType() == TilePropType.TRAP ? propType : null;
     }
 
     public boolean isExit() {
-        return tileProperty == TilePropType.TO_NEXT_FLOOR;
+        return tileProperty.getType() == TilePropType.TO_NEXT_FLOOR;
     }
 
     public String getDecorationType() {
-        return tileProperty == TilePropType.DECORATION ? propType : null;
+        return tileProperty.getType() == TilePropType.DECORATION ? propType : null;
     }
 
     public Tile addNewProperty(String newProp) {
