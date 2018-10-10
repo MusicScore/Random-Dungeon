@@ -11,6 +11,8 @@ import com.github.musicscore.randomdungeon.dungeon.Dungeon;
 
 
 // This is a semi-direct copy-and-paste from an online tutorial. Needs retouching at some point.
+
+// Note: FIND A TUTORIAL THAT DOESN'T USE ANCIENT RAYCASTING! A graphical library, for example
 public class GameEngine extends JFrame implements Runnable {
     private static final long serialVersionUID = 1L;
     private Thread thread;

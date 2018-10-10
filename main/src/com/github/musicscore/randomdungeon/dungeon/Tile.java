@@ -1,12 +1,7 @@
 package com.github.musicscore.randomdungeon.dungeon;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-
-import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
+import com.github.musicscore.randomdungeon.dungeon.util.TileProp;
 import com.github.musicscore.randomdungeon.dungeon.util.TileType;
-import com.github.musicscore.randomdungeon.item.Item;
 
 // TODO[#0004]
 // Refine the tile data processing. More methods/instancing fields as needed.
@@ -15,99 +10,76 @@ public class Tile {
 
     private int tileX, tileY;
     private TileType tileType;
+    private TileProp tileProp;
 
-    public Tile(int[] id) {
-        this(id, TileType.VOID);
+    /**
+     * Creates a new Tile object.
+     * @param x The x coordinate of the tile.
+     * @param y The y coordinate of the tile.
+     */
+    public Tile(int x, int y) {
+        this(x, y, TileType.VOID);
     }
 
-    public Tile(int[] id, TileType type) {
-        this.tileX = (id.length == 2 ? id[0] : -1);
-        this.tileY = (id.length == 2 ? id[1] : -1);
+
+    /**
+     * Creates a new Tile object with a specific TileType.
+     * @param x The x coordinate of the tile.
+     * @param y The y coordinate of the tile.
+     * @param type The TileType of the tile.
+     */
+    public Tile(int x, int y, TileType type) {
+        this.tileX = Math.max(x, -1);
+        this.tileY = Math.max(y, -1);
         this.tileType = type;
     }
 
-    public void setTileType(TileType type) {
-        tileType = type;
-    }
-
-    public int[] getTileID() {
-        if (tileX == -1 || tileY == -1) {
-            return null;
-        }
-        return new int[]{tileX, tileY};
-    }
-
+    /**
+     * Returns the x coordinate of the tile.
+     * @return The x coordinate of the tile.
+     */
     public int getTileX() {
         return tileX >= 0 ? tileX : -1;
     }
 
+    /**
+     * Returns the y coordinate of the tile.
+     * @return The y coordinate of the tile.
+     */
     public int getTileY() {
         return tileY >= 0 ? tileY : -1;
     }
 
+    /**
+     * Sets the tile's TileType.
+     * @param type The new TileType.
+     */
+    public void setTileType(TileType type) {
+        tileType = type;
+    }
+
+    /**
+     * Returns the TileType of the Tile object.
+     * @return The TileType of the Tile object.
+     */
     public TileType getTileType() {
         return tileType;
     }
 
-    private TileProp tileProperty = null;
-    private String propType = null;
-    private ArrayList<Item> containerContentsList = new ArrayList<>();
-    private HashSet<String> propertyList = new HashSet<>();
-
-    public void setContainerContents(ArrayList<Item> itemList) {
-        containerContentsList.addAll(itemList);
+    /**
+     * Returns the TileProp object assigned to the tile.
+     * @return The TileProp object assigned to the tile.
+     */
+    public TileProp getTileProp() {
+        return tileProp;
     }
 
-    public void setProperty(TileProp prop) {
-        tileProperty = prop;
-    }
-
-    public ArrayList<Item> listContents() {
-        return tileProperty.getType() == TilePropType.TREASURE || tileProperty.getType() == TilePropType.CHEST ? containerContentsList : null;
-    }
-
-    public String getTrapType() {
-        return tileProperty.getType() == TilePropType.TRAP ? propType : null;
-    }
-
-    public boolean isExit() {
-        return tileProperty.getType() == TilePropType.TO_NEXT_FLOOR;
-    }
-
-    public String getDecorationType() {
-        return tileProperty.getType() == TilePropType.DECORATION ? propType : null;
-    }
-
-    public Tile addNewProperty(String newProp) {
-        propertyList.add(newProp);
-        return this;
-    }
-
-    public Tile addNewProperty(Collection<String> newPropList) {
-        propertyList.addAll(newPropList);
-        return this;
-    }
-
-    public Tile removeProperty(String removeProp) {
-        propertyList.remove(removeProp);
-        return this;
-    }
-
-    public Tile removeProperty(Collection<String> removeProp) {
-        propertyList.removeAll(removeProp);
-        return this;
-    }
-
-    public boolean hasProperty(String prop) {
-        return propertyList.contains(prop);
-    }
-
-    public boolean isEmpty() {
-        return propertyList.isEmpty();
-    }
-
-    public HashSet listProperties() {
-        return propertyList;
+    /**
+     * Assigns a TileProp object to the tile.
+     * @param newProp The TileProp object to add to the tile.
+     */
+    public void setTileProp(TileProp newProp) {
+        tileProp = newProp;
     }
 
 }
