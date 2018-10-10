@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.dungeonGeneration.util;
+package com.mysteryclive.gmail.dungeon.util;
 
 import java.security.SecureRandom;
 

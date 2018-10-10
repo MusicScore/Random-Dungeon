@@ -3,7 +3,7 @@ package com.mysteryclive.gmail.entity;
 import java.util.HashSet;
 import java.util.HashMap;
 
-import com.mysteryclive.gmail.itemHandler.ItemClass;
+import com.mysteryclive.gmail.item.ItemClass;
 
 public class Entity {
 

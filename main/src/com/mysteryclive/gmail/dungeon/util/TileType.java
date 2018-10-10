@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.dungeonGeneration.util;
+package com.mysteryclive.gmail.dungeon.util;
 
 public enum TileType {
     VOID,

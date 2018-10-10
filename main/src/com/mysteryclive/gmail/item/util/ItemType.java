@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.itemHandler.util;
+package com.mysteryclive.gmail.item.util;
 
 public enum ItemType {
     HEALING_MINOR,

@@ -1,6 +1,6 @@
-package com.mysteryclive.gmail.itemHandler;
+package com.mysteryclive.gmail.item;
 
-import com.mysteryclive.gmail.itemHandler.util.ItemType;
+import com.mysteryclive.gmail.item.util.ItemType;
 
 public class ItemClass {
 

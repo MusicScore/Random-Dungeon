@@ -1,11 +1,11 @@
-package com.mysteryclive.gmail.entity.specialEntity;
+package com.mysteryclive.gmail.entity.special;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.mysteryclive.gmail.entity.Entity;
 import com.mysteryclive.gmail.entity.EntityType;
-import com.mysteryclive.gmail.itemHandler.ItemClass;
+import com.mysteryclive.gmail.item.ItemClass;
 
 public class Player extends Entity {
 

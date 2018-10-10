@@ -1,7 +1,7 @@
 package com.mysteryclive.gmail;
 
-import com.mysteryclive.gmail.dungeonGeneration.DungeonClass;
-import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
+import com.mysteryclive.gmail.dungeon.DungeonClass;
+import com.mysteryclive.gmail.dungeon.util.TileType;
 import com.mysteryclive.gmail.render.GameEngine;
 
 public class RandomDungeon {

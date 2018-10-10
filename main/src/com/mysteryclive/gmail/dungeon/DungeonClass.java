@@ -1,11 +1,11 @@
-package com.mysteryclive.gmail.dungeonGeneration;
+package com.mysteryclive.gmail.dungeon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.security.SecureRandom;
 
-import com.mysteryclive.gmail.dungeonGeneration.util.Direction;
-import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
+import com.mysteryclive.gmail.dungeon.util.Direction;
+import com.mysteryclive.gmail.dungeon.util.TileType;
 
 public class DungeonClass {
 

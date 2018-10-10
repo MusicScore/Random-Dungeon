@@ -1,12 +1,12 @@
-package com.mysteryclive.gmail.dungeonGeneration;
+package com.mysteryclive.gmail.dungeon;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.mysteryclive.gmail.dungeonGeneration.util.TilePropType;
-import com.mysteryclive.gmail.dungeonGeneration.util.TileType;
-import com.mysteryclive.gmail.itemHandler.ItemClass;
+import com.mysteryclive.gmail.dungeon.util.TilePropType;
+import com.mysteryclive.gmail.dungeon.util.TileType;
+import com.mysteryclive.gmail.item.ItemClass;
 
 // TODO[#0004]
 // Refine the tile data processing. More methods/instancing fields as needed.
