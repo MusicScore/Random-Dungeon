@@ -1,8 +1,8 @@
-package com.mysteryclive.gmail.randomdungeon;
+package com.github.musicscore.randomdungeon;
 
-import com.mysteryclive.gmail.randomdungeon.dungeon.DungeonClass;
-import com.mysteryclive.gmail.randomdungeon.dungeon.util.TileType;
-import com.mysteryclive.gmail.randomdungeon.render.GameEngine;
+import com.github.musicscore.randomdungeon.dungeon.DungeonClass;
+import com.github.musicscore.randomdungeon.dungeon.util.TileType;
+import com.github.musicscore.randomdungeon.render.GameEngine;
 
 public class RandomDungeon {
 

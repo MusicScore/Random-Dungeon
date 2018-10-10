@@ -1,9 +1,9 @@
-package com.mysteryclive.gmail.randomdungeon.entity;
+package com.github.musicscore.randomdungeon.entity;
 
 import java.util.HashSet;
 import java.util.HashMap;
 
-import com.mysteryclive.gmail.randomdungeon.item.ItemClass;
+import com.github.musicscore.randomdungeon.item.ItemClass;
 
 public class Entity {
 

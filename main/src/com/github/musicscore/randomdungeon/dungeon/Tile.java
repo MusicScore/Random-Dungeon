@@ -1,12 +1,12 @@
-package com.mysteryclive.gmail.randomdungeon.dungeon;
+package com.github.musicscore.randomdungeon.dungeon;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.mysteryclive.gmail.randomdungeon.dungeon.util.TilePropType;
-import com.mysteryclive.gmail.randomdungeon.dungeon.util.TileType;
-import com.mysteryclive.gmail.randomdungeon.item.ItemClass;
+import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
+import com.github.musicscore.randomdungeon.dungeon.util.TileType;
+import com.github.musicscore.randomdungeon.item.ItemClass;
 
 // TODO[#0004]
 // Refine the tile data processing. More methods/instancing fields as needed.

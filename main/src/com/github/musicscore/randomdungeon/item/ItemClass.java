@@ -1,6 +1,6 @@
-package com.mysteryclive.gmail.randomdungeon.item;
+package com.github.musicscore.randomdungeon.item;
 
-import com.mysteryclive.gmail.randomdungeon.item.util.ItemType;
+import com.github.musicscore.randomdungeon.item.util.ItemType;
 
 public class ItemClass {
 

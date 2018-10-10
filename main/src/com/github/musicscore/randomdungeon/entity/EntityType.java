@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.randomdungeon.entity;
+package com.github.musicscore.randomdungeon.entity;
 
 public enum EntityType {
     PLAYER,

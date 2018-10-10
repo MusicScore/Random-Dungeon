@@ -1,4 +1,4 @@
-package com.mysteryclive.gmail.randomdungeon.dungeon.util;
+package com.github.musicscore.randomdungeon.dungeon.util;
 
 public enum TileType {
     VOID,

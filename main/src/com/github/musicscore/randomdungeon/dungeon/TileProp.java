@@ -1,6 +1,6 @@
-package com.mysteryclive.gmail.randomdungeon.dungeon;
+package com.github.musicscore.randomdungeon.dungeon;
 
-import com.mysteryclive.gmail.randomdungeon.dungeon.util.TilePropType;
+import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
 
 public class TileProp {
 
