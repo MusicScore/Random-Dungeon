@@ -1,6 +1,5 @@
 package com.github.musicscore.randomdungeon.render;
 
-//import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -8,8 +7,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
-import com.github.musicscore.randomdungeon.dungeon.DungeonClass;
+import com.github.musicscore.randomdungeon.dungeon.Dungeon;
 
+
+// This is a semi-direct copy-and-paste from an online tutorial. Needs retouching at some point.
 public class GameEngine extends JFrame implements Runnable {
     private static final long serialVersionUID = 1L;
     private Thread thread;
@@ -17,9 +18,9 @@ public class GameEngine extends JFrame implements Runnable {
     private BufferedImage image;
     public int[] pixels;
 
-    private DungeonClass loadedDungeon;
+    private Dungeon loadedDungeon;
 
-    public GameEngine(DungeonClass dungeon) {
+    public GameEngine(Dungeon dungeon) {
         loadedDungeon = dungeon;
         thread = new Thread(this);
         image = new BufferedImage(640, 480, BufferedImage.TYPE_INT_RGB);

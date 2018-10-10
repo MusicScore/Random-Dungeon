@@ -2,7 +2,7 @@ package com.github.musicscore.randomdungeon.item;
 
 import com.github.musicscore.randomdungeon.item.util.ItemType;
 
-public class ItemClass {
+public class Item {
 
     private ItemType item;
     private int quantity;
@@ -10,7 +10,7 @@ public class ItemClass {
     // TODO[#0006]
     // Write a functional item class.
 
-    public ItemClass(ItemType type, int amount) {
+    public Item(ItemType type, int amount) {
         item = type;
         quantity = amount;
     }

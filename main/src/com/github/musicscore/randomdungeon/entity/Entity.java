@@ -3,11 +3,11 @@ package com.github.musicscore.randomdungeon.entity;
 import java.util.HashSet;
 import java.util.HashMap;
 
-import com.github.musicscore.randomdungeon.item.ItemClass;
+import com.github.musicscore.randomdungeon.item.Item;
 
 public class Entity {
 
-    private HashSet<ItemClass> dropList = new HashSet<>();
+    private HashSet<Item> dropList = new HashSet<>();
     private EntityType entityType;
     private HashMap<EntityStatistic, Double> statList = new HashMap<>();
 
@@ -32,7 +32,7 @@ public class Entity {
 
     public Entity(EntityType type, double maxHealth, double statATK, double statDEF, double statLUC, double statDODGE,
                   double statREFLECT,  double statFIRE, double statICE, double statEARTH, double statLIGHT, double statDARK,
-                  HashSet<ItemClass> drops) {
+                  HashSet<Item> drops) {
         this(type, maxHealth, statATK, statDEF, statLUC, statDODGE, statREFLECT, statFIRE, statICE, statEARTH, statLIGHT, statDARK);
         dropList = drops;
     }

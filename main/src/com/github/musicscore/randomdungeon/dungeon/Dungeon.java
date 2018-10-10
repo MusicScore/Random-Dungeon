@@ -7,10 +7,9 @@ import java.security.SecureRandom;
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
 import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
-public class DungeonClass {
+public class Dungeon {
 
     private int width, length;
-    private double dirPrefFactor;
     private ArrayList<Tile> tileSet = new ArrayList<>();
 
     public DungeonClass(int gridWidth, int gridLength) {

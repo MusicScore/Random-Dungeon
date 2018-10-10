@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
 import com.github.musicscore.randomdungeon.dungeon.util.TileType;
-import com.github.musicscore.randomdungeon.item.ItemClass;
+import com.github.musicscore.randomdungeon.item.Item;
 
 // TODO[#0004]
 // Refine the tile data processing. More methods/instancing fields as needed.
@@ -51,10 +51,10 @@ public class Tile {
 
     private TileProp tileProperty = null;
     private String propType = null;
-    private ArrayList<ItemClass> containerContentsList = new ArrayList<>();
+    private ArrayList<Item> containerContentsList = new ArrayList<>();
     private HashSet<String> propertyList = new HashSet<>();
 
-    public void setContainerContents(ArrayList<ItemClass> itemList) {
+    public void setContainerContents(ArrayList<Item> itemList) {
         containerContentsList.addAll(itemList);
     }
 
@@ -62,7 +62,7 @@ public class Tile {
         tileProperty = prop;
     }
 
-    public ArrayList<ItemClass> listContents() {
+    public ArrayList<Item> listContents() {
         return tileProperty.getType() == TilePropType.TREASURE || tileProperty.getType() == TilePropType.CHEST ? containerContentsList : null;
     }
 

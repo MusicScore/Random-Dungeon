@@ -5,12 +5,12 @@ import java.util.HashMap;
 
 import com.github.musicscore.randomdungeon.entity.Entity;
 import com.github.musicscore.randomdungeon.entity.EntityType;
-import com.github.musicscore.randomdungeon.item.ItemClass;
+import com.github.musicscore.randomdungeon.item.Item;
 
 public class Player extends Entity {
 
-    private ArrayList<ItemClass> inventoryContents = new ArrayList<>();
-    private HashMap<String, ItemClass> equipmentContents = new HashMap<>();
+    private ArrayList<Item> inventoryContents = new ArrayList<>();
+    private HashMap<String, Item> equipmentContents = new HashMap<>();
 
     public Player(double maxHealth, double statATK, double statDEF, double statLUC, double statREFLECT,
                   double statDODGE, double statFIRE, double statICE, double statEARTH, double statLIGHT,
