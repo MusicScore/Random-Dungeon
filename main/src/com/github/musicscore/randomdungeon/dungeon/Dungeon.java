@@ -46,7 +46,7 @@ public class Dungeon {
      * @param maxAttempts The maximum amount of attempts to generate each room before the method gives up.
      */
     public void generateRooms(int maxRooms, int maxAttempts) {
-        generateRooms(maxRooms, maxAttempts, 2, Math.min(10, width / 10), 2, Math.min(10, length / 10));
+        generateRooms(maxRooms, maxAttempts, 4, Math.min(5, width / 10), 4, Math.min(5, length / 10));
     }
 
     /**
@@ -106,22 +106,29 @@ public class Dungeon {
      * @param directionalPreference The chance that a particular path will continue in the same direction. Ranges from 0 to 1 inclusively.
      */
     public void generateCorridors(int x, int y, double directionalPreference) {
+        // TODO: Make the corridor generate branching halls instead of just one hallway
         ArrayList<int[]> tileList = new ArrayList<>();
         ArrayList<Direction> validDir = new ArrayList<>();
         Direction lastDir = null;
         SecureRandom rnd = new SecureRandom();
         tileList.add(new int[]{x, y});
+        int[] lastTile = new int[]{x, y};
+        setTile(x, y, new Tile(TileType.FLOOR));
 
         while (!tileList.isEmpty()) {
             validDir.clear();
             for (Direction dir: Direction.values()) {
-                if (canMakeFloor(tileList.get(tileList.size() - 1)[0] + dir.asXOffset(), tileList.get(tileList.size() - 1)[1] + dir.asYOffset())
-                        && canSetCorridor(tileList.get(tileList.size() - 1)[0] + dir.asXOffset(), tileList.get(tileList.size() - 1)[1] + dir.asYOffset())) {
+                if (isValidTile(lastTile[0] + dir.asXOffset() * 3, lastTile[1] + dir.asYOffset() * 3)
+                        && canSetCorridorInDirection(lastTile[0], lastTile[1], dir)) {
+                    System.out.print(dir.toString() + " ");
                     validDir.add(dir);
                 }
             }
+            // DEBUG
+            System.out.println("\nFound " + validDir.size() + " valid directions.");
             if (validDir.isEmpty()) {
-                setTile(x, y, new Tile(TileType.WALL));
+                // DEBUG
+                System.out.println("No valid directions. Going back.\n=================");
                 tileList.remove(tileList.size() - 1);
                 lastDir = null;
                 continue;
@@ -131,8 +138,12 @@ public class Dungeon {
                 lastDir = validDir.get(rnd.nextInt(validDir.size()));
             }
 
-            tileList.add(new int[]{tileList.get(tileList.size() - 1)[0] + lastDir.asXOffset(), tileList.get(tileList.size() - 1)[1] + lastDir.asYOffset()});
-            setTile(tileList.get(tileList.size() - 1)[0], tileList.get(tileList.size() - 1)[1], new Tile(TileType.FLOOR));
+            // DEBUG
+            System.out.println("Direction chosen:" + lastDir + "\n=================");
+            setTile(lastTile[0] + lastDir.asXOffset(), lastTile[1] + lastDir.asYOffset(), new Tile(TileType.FLOOR));
+            setTile(lastTile[0] + lastDir.asXOffset() * 2, lastTile[1] + lastDir.asYOffset() * 2, new Tile(TileType.FLOOR));
+            tileList.add(new int[]{lastTile[0] + lastDir.asXOffset() * 2, lastTile[1] + lastDir.asYOffset() * 2});
+            lastTile = tileList.get(tileList.size() - 1);
         }
     }
 
@@ -223,16 +234,17 @@ public class Dungeon {
      * @param y The y coordinate of the Tile.
      * @return Returns true if a single-tile-wide corridor Tile can be placed at the location.
      */
-    public boolean canSetCorridor(int x, int y) {
-        return resolveTileType(x, y) == null
-                && resolveTileType(x - 1, y + 1) != TileType.FLOOR
-                && resolveTileType(x + 1, y + 1) != TileType.FLOOR
-                && resolveTileType(x - 1, y - 1) != TileType.FLOOR
-                && resolveTileType(x + 1, y - 1) != TileType.FLOOR;
+    public boolean canSetCorridorInDirection(int x, int y, Direction dir) {
+        int newX = x + dir.asXOffset() * 2, newY = y + dir.asYOffset() * 2;
+        return resolveTileType(newX, newY) == null
+                && resolveTileType(newX - 1, newY + 1) != TileType.FLOOR
+                && resolveTileType(newX + 1, newY + 1) != TileType.FLOOR
+                && resolveTileType(newX - 1, newY - 1) != TileType.FLOOR
+                && resolveTileType(newX + 1, newY - 1) != TileType.FLOOR;
     }
 
-    public boolean canMakeFloor(int x, int y) {
-        return x > 0 && x < width - 1 && y > 0 && y < length - 1 && resolveTileType(x, y) == null;
+    public boolean isValidTile(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < length;
     }
 
     /**
@@ -244,11 +256,5 @@ public class Dungeon {
     public TileType resolveTileType(int x, int y) {
         return getTile(x, y) != null ? getTile(x, y).getTileType() : null;
     }
-
-    // TODO[#0002]
-    // Create enough utilities for proper generation.
-
-    // TODO[#0003]
-    // Create a working generator that works with as much efficiency as possible.
 
 }
