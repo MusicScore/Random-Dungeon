@@ -8,46 +8,24 @@ import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
 public class Tile {
 
-    private int tileX, tileY;
     private TileType tileType;
     private TileProp tileProp;
 
     /**
-     * Creates a new Tile object.
-     * @param x The x coordinate of the tile.
-     * @param y The y coordinate of the tile.
+     * Creates a new Tile object with a specific TileType.
+     * @param type The TileType of the tile.
      */
-    public Tile(int x, int y) {
-        this(x, y, TileType.VOID);
+    public Tile(TileType type) {
+        tileType = type;
     }
-
 
     /**
      * Creates a new Tile object with a specific TileType.
-     * @param x The x coordinate of the tile.
-     * @param y The y coordinate of the tile.
      * @param type The TileType of the tile.
      */
-    public Tile(int x, int y, TileType type) {
-        this.tileX = Math.max(x, -1);
-        this.tileY = Math.max(y, -1);
-        this.tileType = type;
-    }
-
-    /**
-     * Returns the x coordinate of the tile.
-     * @return The x coordinate of the tile.
-     */
-    public int getTileX() {
-        return tileX >= 0 ? tileX : -1;
-    }
-
-    /**
-     * Returns the y coordinate of the tile.
-     * @return The y coordinate of the tile.
-     */
-    public int getTileY() {
-        return tileY >= 0 ? tileY : -1;
+    public Tile(TileType type, TileProp prop) {
+        tileType = type;
+        tileProp = prop;
     }
 
     /**
