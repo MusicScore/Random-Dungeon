@@ -2,15 +2,17 @@ package com.github.musicscore.randomdungeon.dungeon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.security.SecureRandom;
+import java.util.Random;
 
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
+import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
 import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
 public class Dungeon {
 
     private int width, length;
-    private ArrayList<Tile> tileSet = new ArrayList<>();
+    private Tile[] tileSet;
+    private Random rnd = new Random();
 
     /**
      * Generates a new rectangular Dungeon using a specified width and length.
@@ -20,6 +22,7 @@ public class Dungeon {
     public Dungeon(int gridWidth, int gridLength) {
         this.width = gridWidth;
         this.length = gridLength;
+        tileSet = new Tile[width * length];
         this.generateBlankGrid();
     }
 
@@ -27,15 +30,14 @@ public class Dungeon {
      * Resets the dungeon and fills every tile with a null.
      */
     public void generateBlankGrid() {
-        tileSet.clear();
+        Tile borderWall = new Tile(TileType.WALL, TilePropType.WALL_UNBREAKABLE);
+        for (int x = 0; x < width; x++) {
+            tileSet[x] = borderWall;
+            tileSet[x + (length - 1) * width] = borderWall;
+        }
         for (int y = 0; y < length; y++) {
-            for (int x = 0; x < width; x++) {
-                if (x == 0 || x == width - 1 || y == 0 || y == length - 1) {
-                    tileSet.add(new Tile(TileType.WALL));
-                    continue;
-                }
-                tileSet.add(null);
-            }
+            tileSet[width - 1 + y * width] = borderWall;
+            tileSet[y * width] = borderWall;
         }
     }
 
@@ -64,7 +66,6 @@ public class Dungeon {
         boolean shouldSkip = false;
         int startX, startY, extendX, extendY;
         HashMap<int[], int[]> listRooms = new HashMap<>();
-        SecureRandom rnd = new SecureRandom();
 
         while (roomsGenerated < maxRooms && attemptsMade < maxAttempts) {
             extendX = rnd.nextInt(maxRoomWidth - minRoomWidth) + minRoomWidth;
@@ -110,25 +111,25 @@ public class Dungeon {
         ArrayList<int[]> tileList = new ArrayList<>();
         ArrayList<Direction> validDir = new ArrayList<>();
         Direction lastDir = null;
-        SecureRandom rnd = new SecureRandom();
-        tileList.add(new int[]{x, y});
-        int[] lastTile = new int[]{x, y};
+
         setTile(x, y, new Tile(TileType.FLOOR));
+        tileList.add(new int[]{x, y});
+        int lastX, lastY;
 
         while (!tileList.isEmpty()) {
+            lastX = tileList.get(tileList.size() - 1)[0];
+            lastY = tileList.get(tileList.size() - 1)[1];
+
             validDir.clear();
             for (Direction dir: Direction.values()) {
-                if (isValidTile(lastTile[0] + dir.asXOffset() * 3, lastTile[1] + dir.asYOffset() * 3)
-                        && canSetCorridorInDirection(lastTile[0], lastTile[1], dir)) {
-                    System.out.print(dir.toString() + " ");
+                if (lastX + dir.asXOffset() * 3 > 0 && lastX + dir.asXOffset() * 3 < width
+                        && lastY + dir.asYOffset() * 3 > 0 && lastY + dir.asYOffset() * 3 < length
+                        && canSetCorridorInDirection(tileList.get(tileList.size() - 1)[0], tileList.get(tileList.size() - 1)[1], dir)) {
                     validDir.add(dir);
                 }
             }
-            // DEBUG
-            System.out.println("\nFound " + validDir.size() + " valid directions.");
+
             if (validDir.isEmpty()) {
-                // DEBUG
-                System.out.println("No valid directions. Going back.\n=================");
                 tileList.remove(tileList.size() - 1);
                 lastDir = null;
                 continue;
@@ -138,12 +139,10 @@ public class Dungeon {
                 lastDir = validDir.get(rnd.nextInt(validDir.size()));
             }
 
-            // DEBUG
-            System.out.println("Direction chosen:" + lastDir + "\n=================");
-            setTile(lastTile[0] + lastDir.asXOffset(), lastTile[1] + lastDir.asYOffset(), new Tile(TileType.FLOOR));
-            setTile(lastTile[0] + lastDir.asXOffset() * 2, lastTile[1] + lastDir.asYOffset() * 2, new Tile(TileType.FLOOR));
-            tileList.add(new int[]{lastTile[0] + lastDir.asXOffset() * 2, lastTile[1] + lastDir.asYOffset() * 2});
-            lastTile = tileList.get(tileList.size() - 1);
+            setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), new Tile(TileType.FLOOR));
+            setTile(lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2, new Tile(TileType.FLOOR));
+            tileList.add(new int[]{lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset()});
+            tileList.add(new int[]{lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2});
         }
     }
 
@@ -167,7 +166,7 @@ public class Dungeon {
      * Returns an ArrayList of all the Tiles in the dungeon.
      * @return All Tiles that compose the dungeon.
      */
-    public ArrayList<Tile> getAllTiles() {
+    public Tile[] getAllTiles() {
         return tileSet;
     }
 
@@ -178,7 +177,7 @@ public class Dungeon {
      * @param tile A Tile object that replaces the old Tile object.
      */
     public void setTile(int x, int y, Tile tile) {
-        tileSet.set(x + y * width, tile);
+        tileSet[x + y * width] = tile;
     }
 
     /**
@@ -188,7 +187,7 @@ public class Dungeon {
      * @return The Tile at the specified (x, y) coordinate.
      */
     public Tile getTile(int x, int y) {
-        return (x < width && x >= 0 && y < length && y >= 0) ? tileSet.get(x + y * width) : null;
+        return (x < width && x >= 0 && y < length && y >= 0) ? tileSet[x + y * width] : null;
     }
 
     /**
@@ -241,10 +240,6 @@ public class Dungeon {
                 && resolveTileType(newX + 1, newY + 1) != TileType.FLOOR
                 && resolveTileType(newX - 1, newY - 1) != TileType.FLOOR
                 && resolveTileType(newX + 1, newY - 1) != TileType.FLOOR;
-    }
-
-    public boolean isValidTile(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < length;
     }
 
     /**

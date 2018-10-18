@@ -1,6 +1,6 @@
 package com.github.musicscore.randomdungeon.dungeon;
 
-import com.github.musicscore.randomdungeon.dungeon.util.TileProp;
+import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
 import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
 // TODO[#0004]
@@ -9,7 +9,7 @@ import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 public class Tile {
 
     private TileType tileType;
-    private TileProp tileProp;
+    private TilePropType tileProp;
 
     /**
      * Creates a new Tile object with a specific TileType.
@@ -23,7 +23,7 @@ public class Tile {
      * Creates a new Tile object with a specific TileType.
      * @param type The TileType of the tile.
      */
-    public Tile(TileType type, TileProp prop) {
+    public Tile(TileType type, TilePropType prop) {
         tileType = type;
         tileProp = prop;
     }
@@ -48,7 +48,7 @@ public class Tile {
      * Returns the TileProp object assigned to the tile.
      * @return The TileProp object assigned to the tile.
      */
-    public TileProp getTileProp() {
+    public TilePropType getTilePropType() {
         return tileProp;
     }
 
@@ -56,7 +56,7 @@ public class Tile {
      * Assigns a TileProp object to the tile.
      * @param newProp The TileProp object to add to the tile.
      */
-    public void setTileProp(TileProp newProp) {
+    public void setTileProp(TilePropType newProp) {
         tileProp = newProp;
     }
 

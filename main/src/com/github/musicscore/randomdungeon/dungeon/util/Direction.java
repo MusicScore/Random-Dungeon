@@ -1,12 +1,12 @@
 package com.github.musicscore.randomdungeon.dungeon.util;
 
-import java.security.SecureRandom;
+import java.util.Random;
 
 public enum Direction {
     NORTH, SOUTH, EAST, WEST;
 
+    private static Random rnd = new Random();
     public static Direction getRandomDirection() {
-        SecureRandom rnd = new SecureRandom();
         return Direction.values()[rnd.nextInt(4)];
     }
 
