@@ -7,8 +7,7 @@ public class Item {
     private ItemType item;
     private int quantity;
 
-    // TODO[#0006]
-    // Write a functional item class.
+    // TODO: Write a functional item class.
 
     public Item(ItemType type, int amount) {
         item = type;

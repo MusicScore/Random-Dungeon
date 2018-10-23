@@ -5,39 +5,48 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
-import com.github.musicscore.randomdungeon.dungeon.util.TilePropType;
+import com.github.musicscore.randomdungeon.dungeon.util.TileProperty;
 import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
 public class Dungeon {
 
     private int width, length;
-    private Tile[] tileSet;
+    private int[] tileSet;
+    private ArrayList<Tile> tileIDList = new ArrayList<>();
     private Random rnd = new Random();
+
+    //==============================================
+    // Constructor and methods containing
+    //   dungeon generation logic
+    //==============================================
 
     /**
      * Generates a new rectangular Dungeon using a specified width and length.
-     * @param gridWidth The width of the dungeon.
-     * @param gridLength The length of the dungeon.
+     * @param width The width of the dungeon.
+     * @param length The length of the dungeon.
      */
-    public Dungeon(int gridWidth, int gridLength) {
-        this.width = gridWidth;
-        this.length = gridLength;
-        tileSet = new Tile[width * length];
-        this.generateBlankGrid();
+    public Dungeon(int width, int length) {
+        this.width = width;
+        this.length = length;
+        tileSet = new int[width * length];
+
+        tileIDList.add(null);
+        tileIDList.add(new Tile(TileType.WALL, TileProperty.WALL_UNBREAKABLE, "blank"));
+        tileIDList.add(new Tile(TileType.FLOOR, null, "blank"));
+        generateBlankGrid();
     }
 
     /**
      * Resets the dungeon and fills every tile with a null.
      */
     public void generateBlankGrid() {
-        Tile borderWall = new Tile(TileType.WALL, TilePropType.WALL_UNBREAKABLE);
         for (int x = 0; x < width; x++) {
-            tileSet[x] = borderWall;
-            tileSet[x + (length - 1) * width] = borderWall;
+            tileSet[x] = 1;
+            tileSet[x + (length - 1) * width] = 1;
         }
         for (int y = 0; y < length; y++) {
-            tileSet[width - 1 + y * width] = borderWall;
-            tileSet[y * width] = borderWall;
+            tileSet[width - 1 + y * width] = 1;
+            tileSet[y * width] = 1;
         }
     }
 
@@ -90,7 +99,7 @@ public class Dungeon {
             for (int y = 0; y < extendY; y++) {
                 for (int x = 0; x < extendX; x++ ) {
                     setTile(startX + x, startY + y,
-                            x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1 ? new Tile(TileType.WALL) : new Tile(TileType.FLOOR));
+                            x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1 ? 1 : 2);
                 }
             }
 
@@ -107,12 +116,11 @@ public class Dungeon {
      * @param directionalPreference The chance that a particular path will continue in the same direction. Ranges from 0 to 1 inclusively.
      */
     public void generateCorridors(int x, int y, double directionalPreference) {
-        // TODO: Make the corridor generate branching halls instead of just one hallway
         ArrayList<int[]> tileList = new ArrayList<>();
         ArrayList<Direction> validDir = new ArrayList<>();
         Direction lastDir = null;
 
-        setTile(x, y, new Tile(TileType.FLOOR));
+        setTile(x, y, 2);
         tileList.add(new int[]{x, y});
         int lastX, lastY;
 
@@ -139,12 +147,17 @@ public class Dungeon {
                 lastDir = validDir.get(rnd.nextInt(validDir.size()));
             }
 
-            setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), new Tile(TileType.FLOOR));
-            setTile(lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2, new Tile(TileType.FLOOR));
+            setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), 2);
+            setTile(lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2, 2);
             tileList.add(new int[]{lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset()});
             tileList.add(new int[]{lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2});
         }
     }
+
+
+    //==============================================
+    // Dungeon management/debug methods
+    //==============================================
 
     /**
      * Returns the width of the dungeon.
@@ -163,21 +176,13 @@ public class Dungeon {
     }
 
     /**
-     * Returns an ArrayList of all the Tiles in the dungeon.
-     * @return All Tiles that compose the dungeon.
-     */
-    public Tile[] getAllTiles() {
-        return tileSet;
-    }
-
-    /**
      * Changes a Tile at a particular (x, y) coordinate on the dungeon grid.
      * @param x The x coordinate of the Tile.
      * @param y The y coordinate of the Tile.
-     * @param tile A Tile object that replaces the old Tile object.
+     * @param tileID The ID of the Tile to place here.
      */
-    public void setTile(int x, int y, Tile tile) {
-        tileSet[x + y * width] = tile;
+    public void setTile(int x, int y, int tileID) {
+        tileSet[x + y * width] = tileID;
     }
 
     /**
@@ -187,18 +192,30 @@ public class Dungeon {
      * @return The Tile at the specified (x, y) coordinate.
      */
     public Tile getTile(int x, int y) {
-        return (x < width && x >= 0 && y < length && y >= 0) ? tileSet[x + y * width] : null;
+        try {
+            return tileIDList.get(tileSet[x + y * width]);
+        }
+        catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
-    /**
-     * Returns an array of all adjacent Tiles (excluding diagonal Tiles) to the tile at the (x, y) coordinate.
-     * @param x The x coordinate on the dungeon grid.
-     * @param y The y coordinate on the dungeon grid.
-     * @return All Tiles immediately adjacent (not diagonal) to the (x, y) coordinate.
-     */
-    public Tile[] getAdjacentTiles(int x, int y) {
-        return new Tile[]{getTile(x, y + 1), getTile(x, y - 1), getTile(x + 1, y), getTile(x - 1, y)};
+    public int getTileID(Tile tile) {
+        return tileIDList.indexOf(tile);
     }
+
+    public void addNewTile(Tile tile) {
+        tileIDList.add(tile);
+    }
+
+    public void removeTile(int index) {
+        tileIDList.remove(index);
+    }
+
+
+    //==============================================
+    // Tile-related methods
+    //==============================================
 
     /**
      * Returns the Tile after moving one tile in the specified Direction from an (x, y) coordinate.
@@ -219,12 +236,12 @@ public class Dungeon {
      * @return The Tile after moving one unit in each Direction from the (x, y) coordinate.
      */
     public Tile tileInDirections(int x, int y, Direction[] dir) {
-        int currentX = x, currentY = y;
+        int totalOffsetX = 0, totalOffsetY = 0;
         for (Direction val : dir) {
-            currentX = val.asXOffset();
-            currentY = val.asYOffset();
+            totalOffsetX += val.asXOffset();
+            totalOffsetY += val.asYOffset();
         }
-        return getTile(currentX, currentY);
+        return getTile(x + totalOffsetX, y + totalOffsetY);
     }
 
     /**

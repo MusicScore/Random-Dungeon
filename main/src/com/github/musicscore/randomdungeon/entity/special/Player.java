@@ -18,4 +18,6 @@ public class Player extends Entity {
         super(EntityType.PLAYER, maxHealth, statATK, statDEF, statLUC, statDODGE, statREFLECT, statFIRE, statICE, statEARTH, statLIGHT, statDARK);
     }
 
+    // TODO: Make a player.
+
 }

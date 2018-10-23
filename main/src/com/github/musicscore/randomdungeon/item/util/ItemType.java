@@ -1,6 +1,7 @@
 package com.github.musicscore.randomdungeon.item.util;
 
 public enum ItemType {
+    // TODO: Should we keep item enums or switch to item classes?
     HEALING_MINOR,
     HEALING_MEDIUM,
     HEALING_MAJOR,
@@ -14,8 +15,4 @@ public enum ItemType {
     LOOT_TREASURE,
     LOOT_RELIC,
     LOOT_LEGENDARY;
-
-    // TODO[#0005]
-    // Should we add more item types?
-
 }
