@@ -83,8 +83,8 @@ public class Dungeon {
             startY = rnd.nextInt(length - extendY);
 
             for (int[] checkRoom : listRooms.keySet()) {
-                if (startX < listRooms.get(checkRoom)[0] && startY < listRooms.get(checkRoom)[1]
-                        && startX + extendX > checkRoom[0] && startY + extendY > checkRoom[1]) {
+                if (startX < listRooms.get(checkRoom)[0] - 1 && startY < listRooms.get(checkRoom)[1] - 1
+                        && startX + extendX > checkRoom[0] - 1 && startY + extendY > checkRoom[1] - 1) {
                     shouldSkip = true;
                     break;
                 }
@@ -98,8 +98,7 @@ public class Dungeon {
 
             for (int y = 0; y < extendY; y++) {
                 for (int x = 0; x < extendX; x++ ) {
-                    setTile(startX + x, startY + y,
-                            x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1 ? 1 : 2);
+                    setTile(startX + x, startY + y, x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1 ? 1 : 2);
                 }
             }
 
@@ -149,7 +148,6 @@ public class Dungeon {
 
             setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), 2);
             setTile(lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2, 2);
-            tileList.add(new int[]{lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset()});
             tileList.add(new int[]{lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2});
         }
     }
