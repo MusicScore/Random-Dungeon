@@ -13,7 +13,7 @@ public class RandomDungeon {
         dungeon01.generateRooms(20, 15, 4, 12, 4, 12);
         for (int y = 1; y < dungeon01.getLength(); y += 2) {
             for (int x = 1; x < dungeon01.getWidth(); x += 2) {
-                if (dungeon01.resolveTileType(x, y) == null) {
+                if (dungeon01.getTile(x, y) == null) {
                     dungeon01.generateCorridors(x, y, 0.3);
                 }
             }
@@ -27,14 +27,14 @@ public class RandomDungeon {
     private static void visualizeGridInConsole(Dungeon dungeon) {
         for (int y = dungeon.getLength() - 1; y >= 0; y--) {
             for (int x = 0; x < dungeon.getWidth(); x++) {
-                if (dungeon.resolveTileType(x, y) == TileType.FLOOR) {
+                if (dungeon.getTile(x, y) == null) {
+                    System.out.print("  ");
+                }
+                else if (dungeon.getTile(x, y).getTileType() == TileType.FLOOR) {
                     System.out.print(". ");
                 }
-                else if (dungeon.resolveTileType(x, y) == TileType.WALL){
-                    System.out.print("O ");
-                }
                 else {
-                    System.out.print("  ");
+                    System.out.print("0 ");
                 }
             }
             System.out.println();

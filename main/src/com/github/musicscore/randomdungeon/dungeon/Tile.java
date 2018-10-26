@@ -7,9 +7,14 @@ import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
 public class Tile {
 
+    // TODO: Figure out how to include obstacles without bloating the Tile class
     private String specialProperty;
     private TileType type;
     private TileProperty property;
+    // 0, 4, 8, 12 = direction (N S E W)
+    // 0, 2 = breakable/unbreakable
+    // 1, 3 = ???
+    private byte walls = 0;
 
     //==============================================
     // Constructors
@@ -27,9 +32,8 @@ public class Tile {
      * Creates a new Tile object with a specific TileType.
      * @param type The TileType of the tile.
      */
-    public Tile(TileType type, TileProperty property, String specialProperty) {
+    public Tile(TileType type, String specialProperty) {
         this.type = type;
-        this.property = property;
         this.specialProperty = specialProperty;
     }
 
