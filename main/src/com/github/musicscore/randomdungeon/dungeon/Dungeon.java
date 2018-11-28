@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
-import com.github.musicscore.randomdungeon.dungeon.util.TileType;
 
 public class Dungeon {
 
@@ -29,9 +28,9 @@ public class Dungeon {
         this.length = length;
         tileSet = new int[width * length];
 
-        tileIDList.add(null);
-        tileIDList.add(new Tile(TileType.FLOOR, "blank"));
-        tileIDList.add(new Tile(TileType.WALL, "blank"));
+        tileIDList.add(new Tile(Tile.Type.VOID));
+        tileIDList.add(new Tile(Tile.Type.FLOOR));
+        tileIDList.add(new Tile(Tile.Type.WALL));
         resetDungeon();
     }
 
@@ -130,14 +129,13 @@ public class Dungeon {
             lastY = tileList.get(tileList.size() - 1)[1];
 
             validDir.clear();
-            // TODO: This creates an infinite loop somehow. Needs fix immediately
-            /*for (Direction dir: Direction.values()) {
-                if (lastX + dir.asXOffset() * 3 > 0 && lastX + dir.asXOffset() * 3 < width
-                        && lastY + dir.asYOffset() * 3 > 0 && lastY + dir.asYOffset() * 3 < length
-                        && diagonalTileTypes(lastX + dir.asXOffset() * 2, lastY + dir.asYOffset() * 2).contains(TileType.FLOOR)) {
+            for (Direction dir: Direction.values()) {
+                if (lastX + dir.asXOffset() > 0 && lastX + dir.asXOffset() < width
+                        && lastY + dir.asYOffset() > 0 && lastY + dir.asYOffset() < length
+                        && canSetCorridor(lastX + dir.asXOffset(), lastY + dir.asYOffset(), dir)) {
                     validDir.add(dir);
                 }
-            }*/
+            }
 
             if (validDir.isEmpty()) {
                 tileList.remove(tileList.size() - 1);
@@ -150,8 +148,7 @@ public class Dungeon {
             }
 
             setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), 1);
-            setTile(lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2, 1);
-            tileList.add(new int[]{lastX + lastDir.asXOffset() * 2, lastY + lastDir.asYOffset() * 2});
+            tileList.add(new int[]{lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset()});
         }
     }
 
@@ -197,7 +194,7 @@ public class Dungeon {
             return tileIDList.get(tileSet[x + y * width]);
         }
         catch (IndexOutOfBoundsException e) {
-            return null;
+            return new Tile(null);
         }
     }
 
@@ -246,18 +243,44 @@ public class Dungeon {
     }
 
     /**
-     * Returns whether or not a single-tile-wide corridor can be placed at a given location.
-     * @param x The x coordinate of the Tile.
-     * @param y The y coordinate of the Tile.
-     * @return Returns true if a single-tile-wide corridor Tile can be placed at the location.
+     * Returns an array of tiles immediately adjacent to the specified coordinate.
+     * @param x
+     * @param y
+     * @return
      */
-    private ArrayList<TileType> diagonalTileTypes(int x, int y) {
-        ArrayList<TileType> tiles = new ArrayList<>();
-        tiles.add(getTile(x + 1, y + 1) == null ? null : getTile(x + 1, y + 1).getTileType());
-        tiles.add(getTile(x - 1, y + 1) == null ? null : getTile(x - 1, y + 1).getTileType());
-        tiles.add(getTile(x + 1, y - 1) == null ? null : getTile(x + 1, y - 1).getTileType());
-        tiles.add(getTile(x - 1, y - 1) == null ? null : getTile(x - 1, y - 1).getTileType());
-        return tiles;
+    public Tile[] getAdjacentTiles(int x, int y) {
+        return new Tile[]{
+                getTile(x + 1, y),
+                getTile(x - 1, y),
+                getTile(x, y + 1),
+                getTile(x, y - 1)
+        };
+    }
+
+    public Tile[] getDiagonalTiles(int x, int y) {
+        return new Tile[]{
+                getTile(x + 1, y + 1),
+                getTile(x - 1, y + 1),
+                getTile(x + 1, y - 1),
+                getTile(x - 1, y - 1)
+        };
+    }
+
+    private boolean canSetCorridor(int x, int y, Direction dir) {
+        if (dir == Direction.NORTH || dir == Direction.SOUTH) {
+            return getTile(x, y).getType() == Tile.Type.VOID
+                    && getTile(x, y + dir.asYOffset()).getType() == Tile.Type.VOID
+                    && getTile(x + 1, y + dir.asYOffset()).getType() != Tile.Type.FLOOR
+                    && getTile(x - 1, y + dir.asYOffset()).getType() != Tile.Type.FLOOR
+                    && getTile(x + 1, y).getType() != Tile.Type.FLOOR
+                    && getTile(x - 1, y).getType() != Tile.Type.FLOOR;
+        }
+        return getTile(x, y).getType() == Tile.Type.VOID
+                && getTile(x + dir.asXOffset(), y).getType() == Tile.Type.VOID
+                && getTile(x + dir.asXOffset(), y + 1).getType() != Tile.Type.FLOOR
+                && getTile(x + dir.asXOffset(), y - 1).getType() != Tile.Type.FLOOR
+                && getTile(x, y + 1).getType() != Tile.Type.FLOOR
+                && getTile(x, y - 1).getType() != Tile.Type.FLOOR;
     }
 
 }
