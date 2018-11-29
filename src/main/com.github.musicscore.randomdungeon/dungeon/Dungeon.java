@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.github.musicscore.randomdungeon.dungeon.tiles.Floor;
-import com.github.musicscore.randomdungeon.dungeon.tiles.Wall;
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
 
 public class Dungeon {
@@ -106,7 +105,6 @@ public class Dungeon {
      * @param y The y location to start generating the maze of corridors at.
      * @param directionalPreference The chance that a particular path will continue in the same direction. Ranges from 0 to 1 inclusively.
      */
-    // TODO: Fix corridors not behaving properly
     public void generateCorridors(int x, int y, double directionalPreference) {
         ArrayList<int[]> tileList = new ArrayList<>();
         ArrayList<Direction> validDir = new ArrayList<>();
@@ -226,7 +224,7 @@ public class Dungeon {
      * Returns an array of Tile objects immediately adjacent to the specified coordinate.
      * @param x The x coordinate.
      * @param y The y coordinate.
-     * @return Returns an array of Tiles. The order will always be north, south, east, and west.
+     * @return An array of Tiles. The order will always be north, south, east, and west.
      */
     public Tile[] getAdjacentTiles(int x, int y) {
         return new Tile[]{
@@ -241,7 +239,7 @@ public class Dungeon {
      * Returns an array of Tile objects diagonally adjacent to the specified coordinate.
      * @param x The x coordinate.
      * @param y The y coordinate.
-     * @return Returns an array of Tiles. The order will always be northeast, northwest, southeast, and southwest.
+     * @return An array of Tiles. The order will always be northeast, northwest, southeast, and southwest.
      */
     public Tile[] getDiagonalTiles(int x, int y) {
         return new Tile[]{
@@ -253,6 +251,8 @@ public class Dungeon {
     }
 
     // Checks to see if a one-tile-long hall can be generated in the specified direction.
+    // TODO: Fix corridors not properly detecting if it's possible to make a corridor at a given
+    //   location.
     private boolean canGenerateCorridorInDirection(int x, int y, Direction dir) {
         if (dir == Direction.NORTH || dir == Direction.SOUTH) {
             return getTile(x, y) == null &&
