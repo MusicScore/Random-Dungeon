@@ -14,8 +14,8 @@ public class Dungeon {
     private Random rnd = new Random();
 
     //==============================================
-    // Constructor and methods containing
-    //   dungeon generation logic
+    // Constructors
+    //
     //==============================================
 
     /**
@@ -28,6 +28,11 @@ public class Dungeon {
         this.length = length;
         tileSet = new Tile[width * length];
     }
+
+    //==============================================
+    // Management/creation methods
+    //
+    //==============================================
 
     /**
      * Resets the dungeon and fills every tile with a null.
@@ -144,7 +149,8 @@ public class Dungeon {
 
 
     //==============================================
-    // Dungeon management/debug methods
+    // Property methods
+    //
     //==============================================
 
     /**
@@ -162,6 +168,11 @@ public class Dungeon {
     public int getLength() {
         return length;
     }
+
+    //==============================================
+    // Tile methods
+    //
+    //==============================================
 
     /**
      * Changes a Tile at a particular (x, y) coordinate on the dungeon grid.
@@ -187,11 +198,6 @@ public class Dungeon {
             return null;
         }
     }
-
-
-    //==============================================
-    // Tile-related methods
-    //==============================================
 
     /**
      * Returns the Tile after moving one tile in the specified Direction from an (x, y) coordinate.
