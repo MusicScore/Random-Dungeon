@@ -99,10 +99,8 @@ public class Dungeon {
 
             for (int y = 0; y < extendY; y++) {
                 for (int x = 0; x < extendX; x++ ) {
-                    setTile(startX + x, startY + y, new Floor());
-                    if (x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1) {
-
-                    }
+                    setTile(startX + x, startY + y,
+                            x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1 ? new Wall() : new Floor());
                 }
             }
 
