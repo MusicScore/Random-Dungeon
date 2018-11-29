@@ -17,7 +17,7 @@ public class RandomDungeon {
         // TODO: Write the actual program.
         Dungeon dungeon01 = new Dungeon(59, 29);
 
-        //dungeon01.generateRooms(20, 15, 4, 12, 4, 12);
+        dungeon01.generateRooms(20, 15, 4, 12, 4, 12);
         boolean skipTile;
         for (int y = 1; y < dungeon01.getLength(); y += 2) {
             for (int x = 1; x < dungeon01.getWidth(); x += 2) {

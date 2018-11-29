@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.github.musicscore.randomdungeon.dungeon.tiles.Floor;
+import com.github.musicscore.randomdungeon.dungeon.tiles.Wall;
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
 
 public class Dungeon {
@@ -26,7 +27,8 @@ public class Dungeon {
     public Dungeon(int width, int length) {
         this.width = width;
         this.length = length;
-        tileSet = new Tile[width * length];
+
+        resetDungeon();
     }
 
     //==============================================
@@ -35,11 +37,17 @@ public class Dungeon {
     //==============================================
 
     /**
-     * Resets the dungeon and fills every tile with a null.
+     * Destroys every Tile and fills the outer edge of the Dungeon with Walls.
      */
     public void resetDungeon() {
+        tileSet = new Tile[width * length];
         for (int i = 0; i < tileSet.length; i++) {
-            tileSet[i] = null;
+            if (i < width || i > width * (length - 1) || i % width == 0 || (i + 1) % width == 0) {
+                tileSet[i] = new Wall();
+            }
+            else {
+                tileSet[i] = null;
+            }
         }
     }
 
@@ -260,20 +268,21 @@ public class Dungeon {
     // TODO: Fix corridors not properly detecting if it's possible to make a corridor at a given
     //   location.
     private boolean canGenerateCorridorInDirection(int x, int y, Direction dir) {
+        int offset;
         if (dir == Direction.NORTH || dir == Direction.SOUTH) {
-            return getTile(x, y) == null &&
-                    getTile(x, y + dir.asYOffset()) == null &&
-                            !(getTile(x + 1, y + dir.asYOffset()) instanceof Floor &&
-                            getTile(x - 1, y + dir.asYOffset()) instanceof Floor &&
-                            getTile(x + 1, y) instanceof Floor &&
-                            getTile(x - 1, y) instanceof Floor);
+            offset = dir.asYOffset();
+            return getTile(x, y) == null && getTile(x, y + offset) == null &&
+                    !(getTile(x + 1, y + offset) instanceof Floor ||
+                    getTile(x - 1, y + offset) instanceof Floor ||
+                    getTile(x + 1, y) instanceof Floor ||
+                    getTile(x - 1, y) instanceof Floor);
         }
-        return getTile(x, y) == null &&
-                getTile(x + dir.asXOffset(), y) == null &&
-                        !(getTile(x + dir.asXOffset(), y + 1) instanceof Floor &&
-                        getTile(x + dir.asXOffset(), y - 1) instanceof Floor &&
-                        getTile(x, y + 1) instanceof Floor &&
-                        getTile(x, y - 1) instanceof Floor);
+        offset = dir.asXOffset();
+        return getTile(x, y) == null && getTile(x + offset, y) == null &&
+                !(getTile(x + offset, y + 1) instanceof Floor ||
+                getTile(x + offset, y - 1) instanceof Floor ||
+                getTile(x, y + 1) instanceof Floor ||
+                getTile(x, y - 1) instanceof Floor);
     }
 
 }
