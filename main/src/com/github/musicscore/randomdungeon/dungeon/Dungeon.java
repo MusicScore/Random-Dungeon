@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.github.musicscore.randomdungeon.dungeon.tiles.Floor;
+import com.github.musicscore.randomdungeon.dungeon.tiles.Wall;
 import com.github.musicscore.randomdungeon.dungeon.util.Direction;
 
 public class Dungeon {
 
     private int width, length;
-    private int[] tileSet;
-    private ArrayList<Tile> tileIDList = new ArrayList<>();
+    private Tile[] tileSet;
     private Random rnd = new Random();
 
     //==============================================
@@ -26,12 +27,7 @@ public class Dungeon {
     public Dungeon(int width, int length) {
         this.width = width;
         this.length = length;
-        tileSet = new int[width * length];
-
-        tileIDList.add(new Tile(Tile.Type.VOID));
-        tileIDList.add(new Tile(Tile.Type.FLOOR));
-        tileIDList.add(new Tile(Tile.Type.WALL));
-        resetDungeon();
+        tileSet = new Tile[width * length];
     }
 
     /**
@@ -39,15 +35,7 @@ public class Dungeon {
      */
     public void resetDungeon() {
         for (int i = 0; i < tileSet.length; i++) {
-            tileSet[i] = 0;
-        }
-        for (int x = 0; x < width; x++) {
-            tileSet[x] = 2;
-            tileSet[x + width * (length - 1)] = 2;
-        }
-        for (int y = 0; y < length; y++) {
-            tileSet[y * width] = 2;
-            tileSet[y * width + width - 1] = 2;
+            tileSet[i] = null;
         }
     }
 
@@ -99,7 +87,10 @@ public class Dungeon {
 
             for (int y = 0; y < extendY; y++) {
                 for (int x = 0; x < extendX; x++ ) {
-                    setTile(startX + x, startY + y, x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1 ? 2 : 1);
+                    setTile(startX + x, startY + y, new Floor());
+                    if (x == 0 || x == extendX - 1 || y == 0 || y == extendY - 1) {
+
+                    }
                 }
             }
 
@@ -115,12 +106,13 @@ public class Dungeon {
      * @param y The y location to start generating the maze of corridors at.
      * @param directionalPreference The chance that a particular path will continue in the same direction. Ranges from 0 to 1 inclusively.
      */
+    // TODO: Fix corridors not behaving properly
     public void generateCorridors(int x, int y, double directionalPreference) {
         ArrayList<int[]> tileList = new ArrayList<>();
         ArrayList<Direction> validDir = new ArrayList<>();
         Direction lastDir = null;
 
-        setTile(x, y, 1);
+        setTile(x, y, new Floor());
         tileList.add(new int[]{x, y});
         int lastX, lastY;
 
@@ -132,7 +124,7 @@ public class Dungeon {
             for (Direction dir: Direction.values()) {
                 if (lastX + dir.asXOffset() > 0 && lastX + dir.asXOffset() < width
                         && lastY + dir.asYOffset() > 0 && lastY + dir.asYOffset() < length
-                        && canSetCorridor(lastX + dir.asXOffset(), lastY + dir.asYOffset(), dir)) {
+                        && canGenerateCorridorInDirection(lastX + dir.asXOffset(), lastY + dir.asYOffset(), dir)) {
                     validDir.add(dir);
                 }
             }
@@ -147,7 +139,7 @@ public class Dungeon {
                 lastDir = validDir.get(rnd.nextInt(validDir.size()));
             }
 
-            setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), 1);
+            setTile(lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset(), new Floor());
             tileList.add(new int[]{lastX + lastDir.asXOffset(), lastY + lastDir.asYOffset()});
         }
     }
@@ -177,10 +169,10 @@ public class Dungeon {
      * Changes a Tile at a particular (x, y) coordinate on the dungeon grid.
      * @param x The x coordinate of the Tile.
      * @param y The y coordinate of the Tile.
-     * @param tileID The ID of the Tile to place here.
+     * @param tile The Tile object to place at the specified coordinate.
      */
-    public void setTile(int x, int y, int tileID) {
-        tileSet[x + y * width] = tileID;
+    public void setTile(int x, int y, Tile tile) {
+        tileSet[x + y * width] = tile;
     }
 
     /**
@@ -191,23 +183,11 @@ public class Dungeon {
      */
     public Tile getTile(int x, int y) {
         try {
-            return tileIDList.get(tileSet[x + y * width]);
+            return tileSet[x + y * width];
         }
         catch (IndexOutOfBoundsException e) {
-            return new Tile(null);
+            return null;
         }
-    }
-
-    public int getTileID(Tile tile) {
-        return tileIDList.indexOf(tile);
-    }
-
-    public void addNewTile(Tile tile) {
-        tileIDList.add(tile);
-    }
-
-    public void removeTile(int index) {
-        tileIDList.remove(index);
     }
 
 
@@ -243,20 +223,26 @@ public class Dungeon {
     }
 
     /**
-     * Returns an array of tiles immediately adjacent to the specified coordinate.
-     * @param x
-     * @param y
-     * @return
+     * Returns an array of Tile objects immediately adjacent to the specified coordinate.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return Returns an array of Tiles. The order will always be north, south, east, and west.
      */
     public Tile[] getAdjacentTiles(int x, int y) {
         return new Tile[]{
-                getTile(x + 1, y),
-                getTile(x - 1, y),
                 getTile(x, y + 1),
-                getTile(x, y - 1)
+                getTile(x, y - 1),
+                getTile(x + 1, y),
+                getTile(x - 1, y)
         };
     }
 
+    /**
+     * Returns an array of Tile objects diagonally adjacent to the specified coordinate.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return Returns an array of Tiles. The order will always be northeast, northwest, southeast, and southwest.
+     */
     public Tile[] getDiagonalTiles(int x, int y) {
         return new Tile[]{
                 getTile(x + 1, y + 1),
@@ -266,21 +252,22 @@ public class Dungeon {
         };
     }
 
-    private boolean canSetCorridor(int x, int y, Direction dir) {
+    // Checks to see if a one-tile-long hall can be generated in the specified direction.
+    private boolean canGenerateCorridorInDirection(int x, int y, Direction dir) {
         if (dir == Direction.NORTH || dir == Direction.SOUTH) {
-            return getTile(x, y).getType() == Tile.Type.VOID
-                    && getTile(x, y + dir.asYOffset()).getType() == Tile.Type.VOID
-                    && getTile(x + 1, y + dir.asYOffset()).getType() != Tile.Type.FLOOR
-                    && getTile(x - 1, y + dir.asYOffset()).getType() != Tile.Type.FLOOR
-                    && getTile(x + 1, y).getType() != Tile.Type.FLOOR
-                    && getTile(x - 1, y).getType() != Tile.Type.FLOOR;
+            return getTile(x, y) == null &&
+                    getTile(x, y + dir.asYOffset()) == null &&
+                            !(getTile(x + 1, y + dir.asYOffset()) instanceof Floor &&
+                            getTile(x - 1, y + dir.asYOffset()) instanceof Floor &&
+                            getTile(x + 1, y) instanceof Floor &&
+                            getTile(x - 1, y) instanceof Floor);
         }
-        return getTile(x, y).getType() == Tile.Type.VOID
-                && getTile(x + dir.asXOffset(), y).getType() == Tile.Type.VOID
-                && getTile(x + dir.asXOffset(), y + 1).getType() != Tile.Type.FLOOR
-                && getTile(x + dir.asXOffset(), y - 1).getType() != Tile.Type.FLOOR
-                && getTile(x, y + 1).getType() != Tile.Type.FLOOR
-                && getTile(x, y - 1).getType() != Tile.Type.FLOOR;
+        return getTile(x, y) == null &&
+                getTile(x + dir.asXOffset(), y) == null &&
+                        !(getTile(x + dir.asXOffset(), y + 1) instanceof Floor &&
+                        getTile(x + dir.asXOffset(), y - 1) instanceof Floor &&
+                        getTile(x, y + 1) instanceof Floor &&
+                        getTile(x, y - 1) instanceof Floor);
     }
 
 }
