@@ -40,14 +40,9 @@ public class Dungeon {
      * Destroys every Tile and fills the outer edge of the Dungeon with Walls.
      */
     public void resetDungeon() {
-        tileSet = new Tile[width * length];
         for (int i = 0; i < tileSet.length; i++) {
-            if (i < width || i > width * (length - 1) || i % width == 0 || (i + 1) % width == 0) {
-                tileSet[i] = new Wall();
-            }
-            else {
-                tileSet[i] = null;
-            }
+            tileSet[i] = i < width || i > width * (length - 1) ||
+                    i % width == 0 || (i + 1) % width == 0 ? new Wall() : null;
         }
     }
 
