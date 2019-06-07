@@ -1,6 +1,5 @@
 package com.github.musicscore.randomdungeon.dungeon.utils;
 
-import com.github.musicscore.randomdungeon.RandomDungeon;
 import com.github.musicscore.randomdungeon.dungeon.Room;
 import com.github.musicscore.randomdungeon.render.Board;
 
