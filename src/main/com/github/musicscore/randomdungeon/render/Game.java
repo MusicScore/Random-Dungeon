@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Game extends JFrame {
 
-    private Board board = null;
+    private Board board;
 
     public Game() {
         this(new Board(100, 100));
@@ -20,14 +20,14 @@ public class Game extends JFrame {
     }
 
     private void initUI() {
-        add(board);
-
-        setSize(board.getPixelWidth(), board.getPixelHeight());
-
-        setResizable(false);
-
         setTitle("RandomDungeon Visualizer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        // TODO: Figure out why the JPanel doesn't fit the JFrame perfectly
+        //setSize(board.getWidthWithPadding(), board.getHeightWithPadding());
+        //setLocationRelativeTo(null);
+
+        //setResizable(false);
+
+        add(board);
     }
 }

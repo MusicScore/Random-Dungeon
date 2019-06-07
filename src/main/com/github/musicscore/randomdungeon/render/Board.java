@@ -16,24 +16,20 @@ public class Board extends JPanel {
         this.width = width;
         this.height = height;
         this.factor = scale;
-
-        setPreferredSize(new Dimension(getPixelWidth(), getPixelHeight()));
     }
 
+    @Override
     public int getWidth() {
-        return width;
+        return (width - 1) * factor;
     }
 
+    @Override
     public int getHeight() {
-        return height;
+        return (height - 1) * factor;
     }
 
-    public int getPixelWidth() {
-        return width * factor;
-    }
-
-    public int getPixelHeight() {
-        return height * factor;
+    public int getTileScale() {
+        return factor;
     }
 
     private int cartesianX(int x) {
@@ -52,7 +48,6 @@ public class Board extends JPanel {
     }
 
     private void testDraw(Graphics g) {
-
         Graphics2D g2d = (Graphics2D) g;
 
         RenderingHints rh
@@ -64,16 +59,18 @@ public class Board extends JPanel {
 
         g2d.setRenderingHints(rh);
 
-        Dimension size = getSize();
-        double w = size.getWidth();
-        double h = size.getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Rectangle2D tile = new Rectangle2D.Double(cartesianX(i), cartesianY(j), factor, factor);
 
-        Rectangle2D tile = new Rectangle2D.Double(width, 0, factor, factor);
-        g2d.setStroke(new BasicStroke(2));
-        g2d.setColor(Color.gray);
-        g2d.setBackground(Color.red);
+                g2d.setStroke(new BasicStroke(1));
+                g2d.setColor(Color.GRAY);
+                g2d.draw(tile);
 
-        g2d.draw(tile);
+                g2d.setColor((((j % 2) + (i % 2)) % 2 == 0) ? Color.BLUE : Color.ORANGE);
+                g2d.fill(tile);
+            }
+        }
     }
 
     public boolean drawTile(int x, int y) {
